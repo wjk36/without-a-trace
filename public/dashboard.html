@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Monda&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="app.js" type="text/javascript"></script>
+    <title>Without A Trace</title>
+</head>
+<body style="overflow: hidden;" id="main-body">
+    <nav>
+        <h3 id="title"><a href="index.html">Without A Trace</a></h3>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="locations.html">Locations</a></li>
+            <li><a href="users.html">Users</a></li>
+            <li id="settings"><i class="fas fa-cog fa-lg"></i></li>
+        </ul>
+    </nav>
+    <div id="username-holder">Guest</div>
+    <div class="settings slide-out">
+
+        <label for="location_serv">Enable Location Services</label><br>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+        <br>
+        <label for="location_serv">Dark Mode</label><br>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+        <br>
+        <form action="http://localhost:8080">
+            <button class="log_out">Log Out</button>
+        </form>
+    </div>
+    <div class="map-wrapper loc">
+        <h2>Profile</h2>
+        <div id="prof-wrapper">
+            <span class="card-top">
+                <i class="fas fa-user-alt fa-9x"></i>
+                <h2 id="prof-name">Guest</h2>
+            </span>
+            <span class="card-bottom">
+                <p>Status: <i id="status" class="fas fa-check-circle"></i></p>
+                <p>Color: <input type="color" id="color" value=""><br></p>
+                <button id="save">Save Changes</button>
+            </span>
+        </div>
+    </div>
+    <div class="near-locations-wrapper loc" style="width: 33%; transform: translateX(-4.5%);">
+        <h2 style="margin-bottom: 20px;">Potential Carriers</h2>
+        <div class="near-loc users" style="width: 80%; height: 90%; margin: auto;">
+        </div>
+    </div>
+    <div class="pin-locations-wrapper loc">
+        <h2 class="tooltip">Pinned Locations
+        </h2>
+        <div class="near-loc pins">
+        </div>
+    </div>
+</body>
+<script>
+    $(window).on('load', function() {
+        var color = document.getElementById('color');
+        window.addEventListener("input", updateProf, false);
+
+        var uname = $('#username-holder').text();
+        $('#prof-name').text(uname);
+
+        $.get('/get-user-info?color=true&status=true&username=' + uname, function(data) {
+            console.log(data);
+            $('.card-top').css('background-color', data.color);
+            $('#prof-wrapper').css('border', '1px solid ' + data.color);
+            if (data.status != 0) {
+                $('#status').replaceWith('<i class="fas fa-exclamation-triangle"></i>');
+            }
+            $('#color').val(data.color);
+        });
+        $('#username-holder').toggleClass('slide-in');
+    });
+
+    function updateProf(event) {
+        $('.card-top').css('background-color', event.target.value);
+        $('#prof-wrapper').css('border', '1px solid ' + event.target.value);
+    }
+
+    $('#save').on('click', function(){
+        var color = $('#color').val();
+        var uname = $('#username-holder').text();
+        data = {
+            "color": color
+        }
+        $.post({url: '/set-user-info?color=true&username=' + uname, data: data}, function(data) {});
+    });
+</script>
+</html>

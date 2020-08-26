@@ -1,0 +1,23 @@
+{
+  "name": "wat",
+  "version": "1.0.0",
+  "description": "covid-19 contact tracing web application",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "covid",
+    "contact"
+  ],
+  "author": "will kraft",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "mysql": "^2.18.1",
+    "request": "^2.88.2",
+    "url": "^0.11.0"
+  }
+}
