@@ -110,12 +110,12 @@ app.get("/grab-nearby-locations", function(req, res) {
     var lat = req.query.lat;
     var lon = req.query.lng;
 
-    request('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + lon + '&radius=1500&key=AIzaSyDua8Us4y1Eaw8DL9zdD0C9TY_LO-JNzJc', async function(err, response, body) {
+    request('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + lon + '&radius=1500&key=API_KEY', async function(err, response, body) {
         let json = JSON.parse(body);
         for (var place in json.results) {
                 var photos = json.results[place].photos;
                 if (photos) {
-                    var src = "https://maps.googleapis.com/maps/api/place/photo?maxheight=" + photos[0].height + "&key=AIzaSyDua8Us4y1Eaw8DL9zdD0C9TY_LO-JNzJc&photoreference=" + photos[0].photo_reference;
+                    var src = "https://maps.googleapis.com/maps/api/place/photo?maxheight=" + photos[0].height + "&key=API_KEY&photoreference=" + photos[0].photo_reference;
                 } else {
                     var src = 'img/loc-bkg.jpg';
                 }
